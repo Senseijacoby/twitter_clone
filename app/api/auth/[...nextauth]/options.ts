@@ -16,6 +16,12 @@ export const options: NextAuthOptions = {
                 password: { label: 'password', type: 'password' }
             },
             async authorize(credentials) {
+                const res = await fetch("/api/auth", {
+                    method: 'POST',
+                    body: JSON.stringify(credentials),
+                    headers: { "Content-Type": "application/json" }
+                })
+
                 if (!credentials?.email || !credentials?.password) {
                     throw new Error('Invalid credentials');
                 }
@@ -44,9 +50,9 @@ export const options: NextAuthOptions = {
         }),
     ],
     debug: process.env.NODE_ENV === 'development',
-    // pages: {
-    //     signIn: '/',
-    // },
+    pages: {
+        signIn: '/',
+    },
 
     session: {
         strategy: "jwt",
@@ -58,7 +64,6 @@ export const options: NextAuthOptions = {
 
 };
 
-export default NextAuth(options);
 
 
 
